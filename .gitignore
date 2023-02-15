@@ -108,3 +108,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# TextMesh Pro files
+[Aa]ssets/TextMesh*Pro/
+
