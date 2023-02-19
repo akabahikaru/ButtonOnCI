@@ -45,7 +45,11 @@ jobs:
             Library-
 
       - name: Run tests
+<<<<<<< HEAD
 	uses: game-ci/unity-test-runner@v2.1.1
+=======
+        uses: game-ci/unity-test-runner@v2
+>>>>>>> parent of 88493d4 (Update main.yml)
         id: testRunner
         with:
           testMode: ${{ matrix.testMode }}
