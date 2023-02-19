@@ -44,7 +44,7 @@ jobs:
             Library-test-project-
             Library-
 
-      - name: Unity - Test runner
+      - name: Test runner
 	uses: game-ci/unity-test-runner@v2.1.1
         id: testRunner
         with:
