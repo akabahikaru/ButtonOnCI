@@ -1,23 +1,28 @@
-name: Acquire activation file
-on:
-  workflow_dispatch: {}
 jobs:
-  activation:
-    name: Request manual activation file 🔑
+  acquire_ulf:
+    name: Acquire .ulf file 🔑
     runs-on: ubuntu-latest
     steps:
-
-      # Return License
-      - name: Return license
-        uses: game-ci/unity-return-license@v2.0.0
-        if: always()
-      # Request activation file
-      - name: Unity - Activate
-        id: getManualLicenseFile
-        uses: game-ci/unity-activate@v2.0.0
-      # Upload artifact (Unity_v20XX.X.XXXX.alf)
-      - name: Unity - Return License
-        uses: game-ci/unity-return-license@v2.0.0
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
         with:
-          name: ${{ steps.getManualLicenseFile.outputs.filePath }}
-          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          node-version: '16'
+
+      - name: Install node package, `unity-license-activate`
+        run: npm install --global unity-license-activate
+
+      - name: Activate the license
+        run: unity-license-activate "${{ secrets.UNITY_EMAIL }}" "${{ secrets.UNITY_PASSWORD }}" "${{ needs.request_alf.outputs.alf }}"
+
+      - name: Read ulf
+        id: ulfRead
+        uses: juliangruber/read-file-action@v1.1.4
+        with:
+          path: ${{ env.ULF_FILE }}
+
+      - name: Update secret UNITY_LICENSE
+        uses: hmanzur/actions-set-secret@v2.0.0
+        with:
+          name: 'UNITY_LICENSE'
+          value: '${{ steps.ulfRead.outputs.content }}'
+          token: ${{ secrets.ACCESS_TOKEN }}
