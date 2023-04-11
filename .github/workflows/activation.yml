@@ -20,6 +20,10 @@ jobs:
     outputs:
       alf: ${{ steps.output.outputs.alf }}
     steps:
+
+      - name: Unity - Return License
+        uses: game-ci/unity-return-license@v2.0.0
+
       - name: Request manual activation file
         id: alfFile
         uses: game-ci/unity-request-activation-file@main
