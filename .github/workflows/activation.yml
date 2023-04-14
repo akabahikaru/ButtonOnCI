@@ -61,13 +61,7 @@ jobs:
 
       - name: Activate the license
         continue-on-error: true
-        run: unity-license-activate "${{ secrets.UNITY_EMAIL }}" "${{ secrets.UNITY_PASSWORD }}" "${{ secrets.EMAIL_PASSWORD }}" "${{ needs.request_alf.outputs.alf }}"
-
-      - name: 🩺 Upload error screenshot
-        uses: actions/upload-artifact@v1
-        with:
-          name: screenshot_error
-          path: error.png
+        run: unity-license-activate "${{ secrets.UNITY_EMAIL }}" "${{ secrets.UNITY_PASSWORD }}" "${{ needs.request_alf.outputs.alf }}"  --password "${{ secrets.EMAIL_PASSWORD }}"
 
       - name: Read ulf
         id: ulfRead
