@@ -6,20 +6,13 @@ jobs:
     name: Request manual activation file 🔑
     runs-on: ubuntu-latest
     steps:
-      - name: checkout self
-        uses: actions/checkout@v3
-
-        # Installs the Unity Editor based on your project version text file
-        # sets -> env.UNITY_EDITOR_PATH
-        # sets -> env.UNITY_PROJECT_PATH
-        # https://github.com/XRTK/unity-setup
-      - uses: xrtk/unity-setup@v6
-
-        # Activates the installation with the provided credentials
-      - uses: xrtk/activate-unity-license@v2
+      # Request manual activation file
+      - name: Request manual activation file
+        id: getManualLicenseFile
+        uses: game-ci/unity-request-activation-file@v2
+      # Upload artifact (Unity_v20XX.X.XXXX.alf)
+      - name: Expose as artifact
+        uses: actions/upload-artifact@v2
         with:
-          # Required
-          username: ${{ secrets.UNITY_USERNAME }}
-          password: ${{ secrets.UNITY_PASSWORD }}
-          # Optional
-          license-type: 'Personal' # Chooses license type to use [ Personal, Professional ]
+          name: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
