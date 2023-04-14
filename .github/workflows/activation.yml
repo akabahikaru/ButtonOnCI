@@ -1,17 +1,10 @@
+name: Acquire activation file
+on:
+  workflow_dispatch: {}
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      #max-parallel: 2 # Use this if you're activating pro license with matrix
-      matrix:
-        include:
-          - os: ubuntu-latest
-            build-targets: StandaloneLinux64
-          - os: windows-latest
-            build-targets: StandaloneWindows64
-          - os: macos-latest
-            build-targets: StandaloneOSX
-
+  activation:
+    name: Request manual activation file 🔑
+    runs-on: ubuntu-latest
     steps:
       - name: checkout self
         uses: actions/checkout@v3
