@@ -39,15 +39,9 @@ jobs:
           echo "::set-output name=alf::${{ steps.alfFile.outputs.filePath }}"
 
   acquire_ulf:
-    needs: [request_alf]
     name: Acquire .ulf file 🔑
     runs-on: ubuntu-latest
     steps:
-      - name: Download .alf artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ needs.request_alf.outputs.alf }}
-
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
@@ -56,15 +50,11 @@ jobs:
       - name: Install node package, `unity-license-activate`
         run: npm install --global unity-license-activate
 
-      - name: Install node package, `unity-verify-code`
-        run: npm install --global unity-verify-code
-
       - name: Activate the license
-        continue-on-error: true
         run: unity-license-activate "${{ secrets.UNITY_EMAIL }}" "${{ secrets.UNITY_PASSWORD }}" "${{ needs.request_alf.outputs.alf }}" --password "${{ secrets.EMAIL_PASSWORD }}"
 
       # Add the error handling step here!
-      - name: Upload error screenshot
+      - name: 🩺 Upload error screenshot
         uses: actions/upload-artifact@v1
         with:
           name: screenshot_error
@@ -81,4 +71,4 @@ jobs:
         with:
           name: 'UNITY_LICENSE'
           value: '${{ steps.ulfRead.outputs.content }}'
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.ACCESS_TOKEN }}
